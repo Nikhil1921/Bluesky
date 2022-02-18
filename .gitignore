@@ -1,0 +1,27 @@
+*/config/development
+*/logs/log-*.php
+!*/logs/index.html
+*/cache/*
+!*/cache/index.html
+!*/cache/.htaccess
+.htaccess
+
+#codeigniter 3
+application/logs/*
+!application/logs/index.html
+!application/logs/.htaccess
+/vendor/*
+*.rar
+*.zip
+assets/images/banners/*
+!assets/images/banners/index.html
+assets/images/blog/*
+!assets/images/blog/index.html
+assets/images/books/*
+!assets/images/books/index.html
+assets/images/documents/*
+!assets/images/documents/index.html
+assets/images/news/*
+!assets/images/news/index.html
+assets/images/status/*
+!assets/images/status/index.html

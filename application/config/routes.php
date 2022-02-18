@@ -1,0 +1,44 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+
+$route['default_controller'] = 'home';
+$route['404_override'] = '';
+$route['translate_uri_dashes'] = TRUE;
+
+$route['adminPanel'] = 'adminPanel/home';
+$route['adminPanel/logout'] = 'adminPanel/home/logout';
+$route['adminPanel/dashboard'] = 'adminPanel/home';
+$route['adminPanel/users']['post'] = 'adminPanel/users/get';
+$route['adminPanel/document']['post'] = 'adminPanel/document/get';
+$route['adminPanel/country']['post'] = 'adminPanel/country/get';
+$route['adminPanel/inquiry']['post'] = 'adminPanel/inquiry/get';
+$route['adminPanel/lead']['post'] = 'adminPanel/lead/get';
+$route['adminPanel/assignedLead']['post'] = 'adminPanel/assignedLead/get';
+$route['adminPanel/followUp']['post'] = 'adminPanel/followUp/get';
+$route['adminPanel/report']['post'] = 'adminPanel/report/get';
+$route['adminPanel/consulting']['post'] = 'adminPanel/consulting/get';
+$route['adminPanel/counseling']['post'] = 'adminPanel/counseling/get';
+$route['adminPanel/ielts']['post'] = 'adminPanel/ielts/get';
+$route['adminPanel/ieltsBatch']['post'] = 'adminPanel/ieltsBatch/get';
+$route['adminPanel/book']['post'] = 'adminPanel/book/get';
+$route['adminPanel/students']['post'] = 'adminPanel/students/get';
+$route['adminPanel/installment']['post'] = 'adminPanel/installment/get';
+$route['adminPanel/todayInstallment']['post'] = 'adminPanel/todayInstallment/get';
+$route['adminPanel/counseling/update_details/(:num)']['post'] = 'adminPanel/counseling/update_post/$1';
+$route['adminPanel/consulting/update_details/(:num)']['post'] = 'adminPanel/consulting/update_post/$1';
+$route['adminPanel/assignedLead/update_details/(:num)']['post'] = 'adminPanel/assignedLead/update_post/$1';
+$route['adminPanel/ielts/update_details/(:num)']['post'] = 'adminPanel/ielts/update_post/$1';
+$route['adminPanel/candidates']['post'] = 'adminPanel/candidates/get';
+$route['adminPanel/material']['post'] = 'adminPanel/material/get';
+$route['adminPanel/fees']['post'] = 'adminPanel/fees/get';
+$route['adminPanel/banner']['post'] = 'adminPanel/banner/get';
+$route['adminPanel/news']['post'] = 'adminPanel/news/get';
+$route['adminPanel/blog']['post'] = 'adminPanel/blog/get';
+$route['adminPanel/video']['post'] = 'adminPanel/video/get';
+$route['adminPanel/meeting']['post'] = 'adminPanel/meeting/get';
+$route['adminPanel/selfReport']['post'] = 'adminPanel/selfReport/get';
+
+$route['adminPanel/profile'] = 'adminPanel/home/profile';
+$route['adminPanel/changePassword'] = 'adminPanel/home/changePassword';
+$route['adminPanel/forgotPassword'] = 'adminPanel/login/forgotPassword';
+$route['adminPanel/checkOtp'] = 'adminPanel/login/checkOtp';
+$route['adminPanel/unauthorized'] = 'adminPanel/home/unauthorized';
