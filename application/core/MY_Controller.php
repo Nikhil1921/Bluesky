@@ -494,12 +494,11 @@ class MY_Controller extends CI_Controller {
         
         $inq_id = d_id($this->input->post('inquiry_id'));
         $status = implode(", ", $this->input->post('status'));
-        if ($this->input->post('sms') === 'yes') {
+        /* if ($this->input->post('sms') === 'yes') {
             $mobile = $this->main->check($this->table, ['id' => $inq_id], 'mobile');
             $sms = 'Your second installment is due in next 2 days. Failure of the timely payment will result in revoking of the profile. Kindly make the payment. Ignore if already paid.';
-
-            // send_sms($sms, $mobile);
-        }
+            send_sms($sms, $mobile);
+        } */
         
         $id = $this->main->update(['id' => $inq_id], ['updated_at' => date("Y-m-d H:i:s"), 'status' => $status, 'status_image' => $img], $this->table);
 

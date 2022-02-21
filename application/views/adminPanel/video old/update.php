@@ -4,7 +4,7 @@
     <div class="card-header">
       <h5 class="card-title m-0"><?= ucwords($operation).' '.ucwords($title) ?></h5>
     </div>
-    <?= form_open_multipart($url.'/add') ?>
+    <?= form_open($url.'/update/'.$id) ?>
     <div class="card-body">
       <div class="row">
         <div class="col-md-6">
@@ -15,7 +15,7 @@
             'class' => "form-control",
             'id' => "video_title",
             'placeholder' => "Enter video title",
-            'value' => set_value('video_title')
+            'value' => (set_value('video_title')) ? set_value('video_title') : $data['video_title']
             ]) ?>
             <?= form_error('video_title') ?>
           </div>
@@ -28,40 +28,9 @@
             'class' => "form-control",
             'id' => "video_url",
             'placeholder' => "Enter video url",
-            'value' => set_value('video_url')
+            'value' => (set_value('video_url')) ? set_value('video_url') : $data['video_url']
             ]) ?>
             <?= form_error('video_url') ?>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <?= form_label("Image", 'image') ?>
-            <div class="input-group">
-              <div class="custom-file">
-                <?= form_input([
-                'type' => "file",
-                'name' => "image",
-                'class' => "custom-file-input",
-                'id' => "image",
-                'accept' => '.png,.jpeg,.jpg,'
-                ]) ?>
-                <?= form_label('Select image', 'image', ['class' => 'custom-file-label']) ?>
-              </div>
-            </div>
-            <?= (isset($img_error)) ? '<strong class="text-danger" style="font-size: 0.8rem;">* '.$img_error.'</strong>' : '' ?>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="form-group">
-            <?= form_label('Video Description', 'description') ?>
-            <?= form_textarea([
-            'name' => "description",
-            'class' => "form-control",
-            'id' => "description",
-            'placeholder' => "Enter Video description",
-            'value' => set_value('description')
-            ]) ?>
-            <?= form_error('description') ?>
           </div>
         </div>
       </div>

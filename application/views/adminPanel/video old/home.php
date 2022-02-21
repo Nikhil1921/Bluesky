@@ -16,8 +16,8 @@
         <thead>
           <tr>
             <th class="target">Sr. No.</th>
-            <th>Book</th>
-            <th class="target">Image</th>
+            <th>Title</th>
+            <th>URL</th>
             <th class="target">Action</th>
           </tr>
         </thead>

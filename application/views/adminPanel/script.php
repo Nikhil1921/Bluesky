@@ -391,6 +391,7 @@
       $(".inquiry_id").val(id);
     }
 
+    <?php if (isset($url)): ?>
     function statusCheck(id) {
       $.ajax({
             url: "<?= base_url($url) ?>"+"/statusCheck",
@@ -406,6 +407,7 @@
         });
       $(".inquiry_id").val(id);
     }
+    <?php endif ?>
 
     function counselor(id) {
       $("#inquiry_id").val(id);
@@ -417,6 +419,7 @@
       window.print();
     }
 
+    <?php if (isset($url)): ?>
     function viewFollowUps(id) {
         $.ajax({
             url: "<?= base_url($url) ?>"+"/followUps",
@@ -541,6 +544,8 @@
             }
         });
     }
+    
+    <?php endif ?>
 
     <?php if (isset($getInqury)): ?>
         function getInqury(){

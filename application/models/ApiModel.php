@@ -9,44 +9,50 @@ class ApiModel extends CI_Model
 		parent::__construct();
 	}
 
-	public function stocks()
+    private $table = 'inquiry';
+
+	public function profile($api)
 	{
-		$select = ['s.id', 's.deler', 's.city', 's.invoice_type', 's.fin_no', 's.invoice_gp_no', 's.gr_no', 's.account_code', 's.model_code', 's.model_description', 's.color_code', 's.color_description', 's.chassis_prefix', 's.chassis_no', 's.engine_no', 's.invoice_date', 's.invoice_date_road_perm', 's.invoice_amount', 's.order_cat', 's.plant', 's.tin', 's.sent_by', 's.consignment_no', 's.trans_reg_no', 's.allot_no', 's.trans_name', 's.email_id', 's.financer', 's.status', 'e.fullname'];
-
-		$search = ['s.deler', 's.city', 's.invoice_type', 's.fin_no', 's.invoice_gp_no', 's.gr_no', 's.account_code', 's.model_code', 's.model_description', 's.color_code', 's.color_description', 's.chassis_prefix', 's.chassis_no', 's.engine_no', 's.invoice_date', 's.invoice_date_road_perm', 's.invoice_amount', 's.order_cat', 's.plant', 's.tin', 's.sent_by', 's.consignment_no', 's.trans_reg_no', 's.allot_no', 's.trans_name', 's.email_id', 's.financer'];
-
-		$this->db->select($select)	
-            ->from('stocks s')
-            ->where(['s.is_deleted' => 0])
-            ->join('employee e', 'e.id = s.hold_by', 'left');
-
-        $i = 0;
-
-        foreach ($search as $item) 
-        {
-            if($this->input->get('search')) 
-            {
-                if($i===0) 
-                {
-                    $this->db->group_start(); 
-                    $this->db->like($item, $this->input->get('search'));
-                }
-                else
-                {
-                    $this->db->or_like($item, $this->input->get('search'));
-                }
- 
-                if(count($search) - 1 == $i) 
-                    $this->db->group_end(); 
-            }
-            $i++;
+		$select = 'name, mobile, email, inquiry_country, status, fees, ielts_fees, batch, grammer, status_image, remarks, ielts, grammer, c.country_name, c.visa_type';
+		
+		$data = $this->db->select($select)
+                         ->from($this->table.' i')
+                         ->where(['i.is_deleted' => 0, 'i.id' => $api])
+						 ->join('country c', 'c.id = i.inquiry_country')
+                         ->get()
+                         ->row();
+		
+		switch ($data->visa_type) {
+            case 'Visitor':
+            case 'IELTS':
+                $data->data = $this->db->select('v.dob, v.purpose, v.documents')
+										->from('visitor_visa v')
+										->where(['v.i_id' => $api])
+										->get()
+										->row();
+                break;
+            
+            case 'Student':
+                $data->data = $this->db->select('v.dob, v.documents, v.education, v.back_log, v.language_data, v.overall_band')
+										->from('student_visa v')
+										->where(['v.i_id' => $api])
+										->get()
+										->row();
+                break;
+            
+            case 'Permanent Residency':
+                $data->data = $this->db->select('v.dob, v.documents, v.status, v.education, v.work_experience, v.work_position_held, v.work_total_experience, v.language_data, v.spouse_name, v.spouse_date, v.tef_status, v.comprehenstion, v.exprestion, v.spouse_education, v.spouse_work_position_held, v.spouse_work_total_experience, v.spouse_language_data, v.overall_band, v.spouse_overall_band, v.french_status, v.spouse_documents, v.spouse_status')
+										->from('pr_visa v')
+										->where(['v.i_id' => $api])
+										->get()
+										->row();
+                break;
+            
+            default:
+                $data->data = [];
+                break;
         }
 
-        if($this->input->get('length') != -1)  
-	        $this->db->limit($this->input->get('length'), $this->input->get('start'));
-	     
-	    $query = $this->db->get();
-
-	    return ['data' => $query->result(), 'filtered_data' => $query->num_rows()];
+		return $data;
 	}
 }

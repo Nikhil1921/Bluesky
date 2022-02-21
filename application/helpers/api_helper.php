@@ -178,7 +178,7 @@ if ( ! function_exists('isValidApiKey'))
     function isValidApiKey($key,$table)
     {
         $CI =& get_instance();
-        $id = $CI->main->check($table, ['id'=>$key], 'id');
+        $id = $CI->main->check($table, ['inq_id' => $key], 'inq_id');
         if ($id) {
             return TRUE;
         }else{
