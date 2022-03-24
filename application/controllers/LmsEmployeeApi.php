@@ -6,6 +6,7 @@ class LmsEmployeeApi extends CI_Controller {
     {
         parent::__construct();
         $this->load->helper('api');
+        $this->load->model('Lms_api', 'api');
         // mobile();
     }
 
@@ -20,10 +21,11 @@ class LmsEmployeeApi extends CI_Controller {
                 'mobile'     => $this->input->post('mobile'),
                 'password'   => my_crypt($this->input->post('password')),
                 'is_blocked' => 0,
+                'role'       => 'LMS Employee',
                 'is_deleted' => 0
             ];
 
-        if($row = $this->main->get($this->table, 'id, name, mobile, email, role, lead_type', $post))
+        if($row = $this->main->get($this->table, 'id, name, mobile, email', $post))
         {
             $response['row'] = $row;
             $response['error'] = FALSE;
@@ -41,42 +43,21 @@ class LmsEmployeeApi extends CI_Controller {
     public function lead_list()
     {
         get();
-        $api = authenticate($this->table);
-        verifyRequiredParams(['formLoad']);
-
-        switch ($this->input->get('formLoad')) {
-            case 'student_visa':
-                $table = 'student_visa';
-                break;
-
-            case 'australia_visa':
-                $table = 'australia_visa';
-                break;
-            
-            case 'canada_visa':
-                $table = 'canada_visa';
-                break;
-            
-            default:
-                $table = 'visitor_visa';
-                break;
-        }
-
-        $where = ['is_deleted' => 0, 'cred_create' => 0, 'consulted_by' => 0, 'assigned' => $api];
+        $api = $this->authenticate();
         
-        if($row = $this->main->getall($table, 'id, name, mobile, email', $where))
+        if($row = $this->api->lead_list($api))
         {
             $response['row'] = $row;
             $response['error'] = FALSE;
             $response['message'] ="Lead List Successful.";
-            echoRespnse(200, $response);
         }
         else 
         {
             $response["error"] = TRUE;
             $response['message'] = "Lead List Not Successful.";
-            echoRespnse(400, $response);
         }
+        
+        echoRespnse(200, $response);
     }
 
     public function add_followup()
@@ -167,7 +148,7 @@ class LmsEmployeeApi extends CI_Controller {
     public function assign_consult()
     {
         post();
-        $api = authenticate($this->table);
+        $api = $this->authenticate($this->table);
         verifyRequiredParams(['lead_id', 'formLoad', 'consultant']);
 
         $post = [
@@ -199,6 +180,32 @@ class LmsEmployeeApi extends CI_Controller {
             $response["error"] = TRUE;
             $response['message'] = "Lead Assigned Not Successful.";
             echoRespnse(400, $response);
+        }
+    }
+
+    private function authenticate()
+    {
+        $CI =& get_instance();
+        
+        $headers = apache_request_headers();
+        $response = array();
+        
+        if (isset($headers['Authorization'])) 
+        {
+            $key = $headers['Authorization'];        
+            
+            if (!$k = $this->main->check($this->table, ['id' => $key], 'id'))
+            {
+                $response["error"] = true;
+                $response["message"] = "Access Denied Invalid Id";
+                echoRespnse(200, $response);
+            } else {
+                return $key;
+            }
+        } else {
+            $response["error"] = true;
+            $response["message"] = "Api key is misssing";
+            echoRespnse(200, $response);
         }
     }
 }
