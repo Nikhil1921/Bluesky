@@ -45,16 +45,18 @@ class Fees extends MY_Controller {
             $sub_array[] = $row->remain_fees;
             $sub_array[] = $row->pay_type;
 
-            $action = '<div class="ml-0 table-display row">';
-
-            $action .= form_button([ 'content' => '<i class="fa fa-history"></i>','type'  => 'button','class' => 'btn btn-outline-dark mr-2', 'onclick' => "viewFees(".e_id($row->id).")"]);
+            $action = '<div class="btn-group" role="group">
+                        <button class="btn btn-outline-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="fa fa-cogs"></span></button><div class="dropdown-menu" x-placement="bottom-start">';
+            
+            $action .= form_button([ 'content' => '<i class="fa fa-history"></i>&nbsp History','type'  => 'button','class' => 'dropdown-item', 'onclick' => "viewFees(".e_id($row->id).")"]);
             
             if (in_array($this->role, ['Accountant'])):
-                $action .= anchor($this->redirect.'/fees/'.e_id($row->id), '<i class="fa fa-rupee-sign"></i>', ['class' => 'btn btn-outline-primary mr-2']);
-                $action .= anchor($this->redirect.'/print/'.e_id($row->id), '<i class="fa fa-print"></i>', ['class' => 'btn btn-outline-primary mr-2']);
+                $action .= anchor($this->redirect.'/fees/'.e_id($row->id), '<i class="fa fa-rupee-sign"></i> Collect Fees', ['class' => 'dropdown-item']);
+                $action .= anchor($this->redirect.'/print/'.e_id($row->id), '<i class="fa fa-print"></i> Print Invoice', ['class' => 'dropdown-item']);
             endif;
 
-            $action .= '</div>';
+            $action .= '</div></div>';
             
             $sub_array[] = $action;
 

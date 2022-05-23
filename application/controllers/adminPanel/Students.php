@@ -44,11 +44,13 @@ class Students extends MY_Controller {
             $sub_array[] = ($row->grammer) ? '<span class="badge badge-success">Yes</span>' : '<span class="badge badge-danger">No</span>' ;
             $sub_array[] = $row->batch_name;
 
-            $action = '<div class="ml-0 table-display row">';
+            $action = '<div class="btn-group" role="group">
+                        <button class="btn btn-outline-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="fa fa-cogs"></span></button><div class="dropdown-menu" x-placement="bottom-start">';
 
-            $action .= form_button([ 'content' => '<i class="fa fa-history"></i>','type'  => 'button','class' => 'btn btn-outline-dark mr-2', 'onclick' => "viewAttendance(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#history"]);
+            $action .= form_button([ 'content' => '<i class="fa fa-history"></i> History','type'  => 'button','class' => 'dropdown-item', 'onclick' => "viewAttendance(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#history"]);
 
-            $action .= '</div>';
+            $action .= '</div></div>';
             
             $sub_array[] = $action;
 

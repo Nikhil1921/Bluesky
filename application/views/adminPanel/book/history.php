@@ -28,7 +28,7 @@
 		<?php endforeach ?>
 		<?php else: ?>
 		<tr>
-			<td colspan="5" class="text-center">No History Available.</td>
+			<td colspan="8" class="text-center">No History Available.</td>
 		</tr>
 		<?php endif ?>
 	</tbody>

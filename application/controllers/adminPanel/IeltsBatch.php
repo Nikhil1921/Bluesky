@@ -43,18 +43,22 @@ class IeltsBatch extends MY_Controller {
             if (!in_array($this->role, ['Operation', 'Super Admin', 'IELTS Coaching']))
                 $sub_array[] = ucfirst($row->name);
 
-            $action = '<div class="ml-0 table-display row">';
-            $action .= form_button([ 'content' => '<i class="fa fa-users"></i>','type'  => 'button','class' => 'btn btn-outline-dark mr-2', 'onclick' => "viewBatch(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#ielts-batch"]);
+            $action = '<div class="btn-group" role="group">
+                        <button class="btn btn-outline-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="fa fa-cogs"></span></button><div class="dropdown-menu" x-placement="bottom-start">';
+
+            $action .= form_button([ 'content' => '<i class="fa fa-users"></i> Batch Details','type'  => 'button','class' => 'dropdown-item', 'onclick' => "viewBatch(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#ielts-batch"]);
             
             if (in_array($this->role, ['IELTS Coaching']))
-                $action .= form_button([ 'content' => '<i class="fa fa-user-check"></i>','type'  => 'button','class' => 'btn btn-outline-primary mr-2', 'onclick' => "makeAttendance(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#make-attendance"]);
+                $action .= form_button([ 'content' => '<i class="fa fa-user-check"></i> Batch Attendance','type'  => 'button','class' => 'dropdown-item', 'onclick' => "makeAttendance(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#make-attendance"]);
             
             if (!in_array($this->role, ['IELTS Coaching']))
-                $action .= anchor($this->redirect.'/update/'.e_id($row->id), '<i class="fa fa-edit"></i>', 'class="btn btn-outline-primary mr-2"').form_open($this->redirect.'/delete', ['id' => e_id($row->id)], ['id' => e_id($row->id)]).form_button([ 'content' => '<i class="fas fa-trash"></i>','type'  => 'button','class' => 'btn btn-outline-danger', 'onclick' => "remove(".e_id($row->id).")"]).form_close();
+                $action .= anchor($this->redirect.'/update/'.e_id($row->id), '<i class="fa fa-edit"></i> Edit', 'class="dropdown-item"').form_open($this->redirect.'/delete', ['id' => e_id($row->id)], ['id' => e_id($row->id)]).form_button([ 'content' => '<i class="fas fa-trash"></i>&nbsp Delete','type'  => 'button','class' => 'dropdown-item', 'onclick' => "remove(".e_id($row->id).")"]).form_close();
 
-            $action .= '</div>';
+            $action .= '</div></div>';
 
             $sub_array[] = $action;
+
             $data[] = $sub_array;
             $sr++;
         }

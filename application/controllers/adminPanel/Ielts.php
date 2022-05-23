@@ -61,20 +61,24 @@ class Ielts extends MY_Controller {
                 $sub_array[] = '<div class="table-display">'.form_button([ 'content' => '<i class="fas fa-chart-line"></i>','type'  => 'button','class' => 'mr-2 btn btn-outline-primary', 'onclick' => "statusCheck(".e_id($row->id).")"]).'</div>';
             }
 
-            $action = '<div class="ml-0 table-display row">';
-            $action .= anchor($this->redirect.'/view_client/'.e_id($row->id).'/'.str_replace(' ', '-', $row->visa_type), '<i class="fa fa-eye"></i>', ['class' => 'btn btn-outline-success mr-2']);
+            $action = '<div class="btn-group" role="group">
+                        <button class="btn btn-outline-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="fa fa-cogs"></span></button><div class="dropdown-menu" x-placement="bottom-start">';
+
+            $action .= anchor($this->redirect.'/view_client/'.e_id($row->id).'/'.str_replace(' ', '-', $row->visa_type), '<i class="fa fa-print"></i> Print', ['class' => 'dropdown-item']);
+            
             if (in_array($this->role, ['IELTS Operation'])){
-                $action .= anchor($this->redirect.'/update_details/'.e_id($row->id).'/'.str_replace(' ', '-', $row->visa_type), '<i class="fa fa-edit"></i>', ['class' => 'btn btn-outline-primary mr-2']);
-                $action .= anchor($this->redirect.'/fees/'.e_id($row->id), '<i class="fa fa-rupee-sign"></i>', ['class' => 'btn btn-outline-primary mr-2']);
+                $action .= anchor($this->redirect.'/update_details/'.e_id($row->id).'/'.str_replace(' ', '-', $row->visa_type), '<i class="fa fa-edit"></i> Edit', ['class' => 'dropdown-item']);
+                $action .= anchor($this->redirect.'/fees/'.e_id($row->id), '<i class="fa fa-rupee-sign"></i>&nbsp&nbsp Add Fees', ['class' => 'dropdown-item']);
             }
 
-            $action .= form_button([ 'content' => '<i class="fa fa-history"></i>','type'  => 'button','class' => 'btn btn-outline-dark mr-2', 'onclick' => "viewHistory(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#history"]);
+            $action .= form_button([ 'content' => '<i class="fa fa-history"></i> History','type'  => 'button','class' => 'dropdown-item', 'onclick' => "viewHistory(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#history"]);
 
             if (in_array($this->role, ['IELTS Operation']))
-                $action .= form_button([ 'content' => '<i class="fas fa-user-plus"></i>','type'  => 'button','class' => 'mr-2 btn btn-outline-primary', 'onclick' => "counselor(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#asign-counselor"]);
-
-            $action .= '</div>';
+                $action .= form_button([ 'content' => '<i class="fas fa-user-plus"></i> Add Remarks','type'  => 'button','class' => 'dropdown-item', 'onclick' => "counselor(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#asign-counselor"]);
             
+            $action .= '</div></div>';
+
             $sub_array[] = $action;
 
             $data[] = $sub_array;  

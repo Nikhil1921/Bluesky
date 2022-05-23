@@ -40,19 +40,23 @@ class Report extends MY_Controller {
             $sub_array[] = $row->email;
             $sub_array[] = $row->role;
 
-            $action = '<div class="ml-0 table-display row">';
-            
+            $action = '<div class="btn-group" role="group">
+                        <button class="btn btn-outline-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="fa fa-cogs"></span></button><div class="dropdown-menu" x-placement="bottom-start">';
+
             if (in_array($row->role, ['Reception', 'Counselor', 'Consultant', 'IELTS Operation'])) 
-            	$action .= anchor($this->redirect.'/inquiry/'.e_id($row->id), '<i class="fa fa-question-circle"></i>', 'class="btn btn-outline-info mr-2"');
+            	$action .= anchor($this->redirect.'/inquiry/'.e_id($row->id), '<i class="fa fa-user"></i> View Report', 'class="dropdown-item"');
             
             if (in_array($row->role, ['Reception', 'LMS', 'LMS Employee'])) 
-                $action .= anchor($this->redirect.'/leads/'.e_id($row->id), '<i class="fa fa-user"></i>', 'class="btn btn-outline-info mr-2"');
+                $action .= anchor($this->redirect.'/leads/'.e_id($row->id), '<i class="fa fa-user"></i> View Report', 'class="dropdown-item"');
 
             if (in_array($row->role, ['IELTS Coaching']))
-                $action .= anchor($this->redirect.'/coaching/'.e_id($row->id), '<i class="fa fa-user"></i>', 'class="btn btn-outline-info mr-2"');
+                $action .= anchor($this->redirect.'/coaching/'.e_id($row->id), '<i class="fa fa-user"></i> View Report', 'class="dropdown-item"');
+            
+            $action .= '</div></div>';
 
-            $action .= '</div>';
             $sub_array[] = $action;
+            
             $data[] = $sub_array;  
             $sr++;
         }

@@ -48,11 +48,16 @@ class AssignedLead extends MY_Controller {
             $sub_array[] = ucwords($row->employee);
             $sub_array[] = $row->remarks;
 
-            $action = '<div class="ml-0 table-display row">'.form_button([ 'content' => '<i class="fa fa-history"></i>','type'  => 'button','class' => 'btn btn-outline-dark mr-2', 'onclick' => "viewFollowUps(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#history"]);
-            if (in_array($this->role, ['LMS Employee', 'Reception']))
-                $action .= form_button([ 'content' => '<i class="fa fa-user-plus"></i>','type'  => 'button','class' => 'btn btn-outline-primary mr-2', 'onclick' => "assign(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#add-follow-up"]).anchor($this->redirect.'/update_details/'.e_id($row->id).'/'.str_replace(' ', '-', $row->visa_type), '<i class="fa fa-edit"></i>', ['class' => 'btn btn-outline-primary mr-2']).anchor($this->redirect.'/visa_type/'.e_id($row->id), '<i class="fa fa-globe"></i>', ['class' => 'btn btn-outline-primary mr-2']);
+            $action = '<div class="btn-group" role="group">
+                        <button class="btn btn-outline-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="fa fa-cogs"></span></button><div class="dropdown-menu" x-placement="bottom-start">';
 
-            $action .= '</div>';
+            $action .= form_button([ 'content' => '<i class="fa fa-history"></i> History','type'  => 'button','class' => 'dropdown-item', 'onclick' => "viewFollowUps(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#history"]);
+            
+            if (in_array($this->role, ['LMS Employee', 'Reception']))
+                $action .= form_button([ 'content' => '<i class="fa fa-user-plus"></i>','type'  => 'button','class' => 'dropdown-item', 'onclick' => "assign(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#add-follow-up"]).anchor($this->redirect.'/update_details/'.e_id($row->id).'/'.str_replace(' ', '-', $row->visa_type), '<i class="fa fa-edit"></i> Edit', ['class' => 'dropdown-item']).anchor($this->redirect.'/visa_type/'.e_id($row->id), '<i class="fa fa-globe"></i> Change country', ['class' => 'dropdown-item']);
+
+            $action .= '</div></div>';
             $sub_array[] = $action;
 
             $data[] = $sub_array;  

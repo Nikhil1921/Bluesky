@@ -34,6 +34,7 @@ class FollowUp extends MY_Controller {
 	public function get()
     {
         $fetch_data = $this->main->make_datatables(admin('followup_model'));
+        
         $sr = $_POST['start'] + 1;
         $data = array();
 
@@ -51,14 +52,19 @@ class FollowUp extends MY_Controller {
             $sub_array[] = $row->remarks;
             // $sub_array[] = '<div class="table-display">'.form_open($this->redirect.'/ielts-approve', ['id' => 'ielts'.e_id($row->id)], ['id' => e_id($row->id)]).form_button([ 'content' => '<i class="fa fa-headphones"></i>','type'  => 'button','class' => 'btn btn-outline-warning', 'onclick' => "ielts(".e_id($row->id).")"]).form_close().'</div>';
             
-            $action = '<div class="ml-0 table-display ">';
+            $action = '<div class="btn-group" role="group">
+                        <button class="btn btn-outline-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="fa fa-cogs"></span></button><div class="dropdown-menu" x-placement="bottom-start">';
             
-            $action .= '<div class="table-display">'.form_button([ 'content' => '<i class="fa fa-history"></i>','type'  => 'button','class' => 'btn btn-outline-dark mr-2', 'onclick' => "viewFollowUps(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#follow-ups"]).'</div>';
+            $action .= form_button([ 'content' => '<i class="fa fa-history"></i>&nbsp History','type'  => 'button','class' => 'dropdown-item', 'onclick' => "viewFollowUps(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#follow-ups"]);
             
-            if (in_array($this->role, ['LMS Employee', 'Reception']))
-                $action .= form_button([ 'content' => '<i class="fa fa-user-plus"></i>','type'  => 'button','class' => 'btn btn-outline-primary mr-2', 'onclick' => "assign(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#add-follow-up"]).form_button([ 'content' => '<i class="fas fa-user"></i>','type'  => 'button','class' => 'mr-2 btn btn-outline-primary', 'onclick' => "counselor(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#asign-counselor"]);
+            if (in_array($this->role, ['LMS Employee', 'Reception'])){
+                $action .= form_button([ 'content' => '<i class="fa fa-user-plus"></i> Add Follow Up','type'  => 'button','class' => 'dropdown-item', 'onclick' => "assign(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#add-follow-up"]);
+                $action .= form_button([ 'content' => '<i class="fas fa-user"></i>&nbsp&nbsp Assign Lead','type'  => 'button','class' => 'dropdown-item', 'onclick' => "counselor(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#asign-counselor"]);
+            }
 
-            $action .= '</div>';
+            $action .= '</div></div>';
+
             $sub_array[] = $action;
 
             $data[] = $sub_array;

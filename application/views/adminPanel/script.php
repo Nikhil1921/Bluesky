@@ -394,8 +394,8 @@
     <?php if (isset($url)): ?>
     function statusCheck(id) {
       $.ajax({
-            url: "<?= base_url($url) ?>"+"/statusCheck",
-            type: 'POST',
+            url: `<?= base_url($url) ?>/statusCheck`,
+            type: 'GET',
             data: {id: id},
             success: function(result) {
                 $("#show-status").html(result);
@@ -597,4 +597,35 @@
         }
         getCoaching();
     <?php endif ?>
+
+    const addFields = (name, title, remark=false) => {
+
+        const count = $(`#${name}-fields`).children().length;
+        
+        let fields = `<div class="col-${remark === true ? 6 : 11} ${name}_${count}">
+            <div class="form-group">
+                <label for="${name}">${title}</label>
+                <input type="text" name="${name}[]" class="form-control" placeholder="${title}" />
+            </div>
+        </div>`;
+        
+        if(remark === true) {
+            fields += `<div class="col-5 ${name}_${count}">
+                <div class="form-group">
+                    <label for="${name}-remarks">Remarks</label>
+                    <input type="text" name="${name}-remarks[]" class="form-control" placeholder="Remarks" />
+                </div>
+            </div>`;
+        }
+
+        fields += `<div class="col-1 mt-4 ${name}_${count}">
+            <button type="button" onclick="removeFields('${name}_${count}')" class="btn btn-outline-danger col-12"><i class="fa fa-minus"></i></button>
+        </div>`;
+
+        $(`#${name}-fields`).append(fields);
+    };
+
+    const removeFields = (name) => {
+        $("."+name).remove();
+    };
 </script>

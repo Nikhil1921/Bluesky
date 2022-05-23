@@ -5,8 +5,8 @@ class SelfReport extends MY_Controller {
     public function __construct()
     {
         parent::__construct();
-        if (!in_array($this->role, $this->access)) 
-            return redirect(admin('unauthorized'));
+        /* if (!in_array($this->role, $this->access)) 
+            return redirect(admin('unauthorized')); */
     }
 
 	protected $name = 'selfReport';
@@ -47,12 +47,17 @@ class SelfReport extends MY_Controller {
             $sub_array[] = ucwords($row->employee);
             $sub_array[] = $row->remarks;
 
-            $action = '<div class="ml-0 table-display row">'.form_button([ 'content' => '<i class="fa fa-history"></i>','type'  => 'button','class' => 'btn btn-outline-dark mr-2', 'onclick' => "viewFollowUps(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#history"]);
+            $action = '<div class="btn-group" role="group">
+                        <button class="btn btn-outline-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="fa fa-cogs"></span></button><div class="dropdown-menu" x-placement="bottom-start">';
+
+            $action .= form_button([ 'content' => '<i class="fa fa-history"></i> History','type'  => 'button','class' => 'dropdown-item', 'onclick' => "viewFollowUps(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#history"]);
             
-            $action .= '</div>';
+            $action .= '</div></div>';
+
             $sub_array[] = $action;
 
-            $data[] = $sub_array;  
+            $data[] = $sub_array;
             $sr++;
         }
         

@@ -45,20 +45,24 @@ class Book extends MY_Controller {
             $sub_array[] = ($row->mobile) ? $row->mobile : '<span class="badge badge-danger">Not issued</span>';
             $sub_array[] = ($row->name) ? date('d-m-Y', strtotime($row->return_date)) : '<span class="badge badge-danger">Not issued</span>';
 
-            $action = '<div class="ml-0 table-display row">';
-            $action .= anchor($this->redirect.'/update/'.e_id($row->id), '<i class="fa fa-edit"></i>', 'class="btn btn-outline-primary mr-2"')
-                    ;
+            $action = '<div class="btn-group" role="group">
+                        <button class="btn btn-outline-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="fa fa-cogs"></span></button><div class="dropdown-menu" x-placement="bottom-start">';
+
+            $action .= anchor($this->redirect.'/update/'.e_id($row->id), '<i class="fa fa-edit"></i> Edit', 'class="dropdown-item"');
+            
             if (in_array($this->role, ['IELTS Operation']))
                 if (!$row->name)
-                    $action .= form_button([ 'content' => '<i class="fa fa-user"></i>','type'  => 'button','class' => 'btn btn-outline-primary mr-2', 'onclick' => "counselor(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#issue-book"]);
+                    $action .= form_button([ 'content' => '<i class="fa fa-user"></i>&nbsp Issue Book','type'  => 'button','class' => 'dropdown-item', 'onclick' => "counselor(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#issue-book"]);
                 else
-                    $action .= form_open($this->redirect.'/returnBook', ['id' => 'book'.e_id($row->id)], ['id' => e_id($row->id), 'student' => e_id($row->current_issue)]).form_button([ 'content' => '<i class="fas fa-file-signature"></i>','type'  => 'button','class' => 'btn btn-outline-success mr-2', 'onclick' => "returnBook(".e_id($row->id).")"]).form_close();
+                    $action .= form_open($this->redirect.'/returnBook', ['id' => 'book'.e_id($row->id)], ['id' => e_id($row->id), 'student' => e_id($row->current_issue)]).form_button([ 'content' => '<i class="fas fa-file-signature"></i> Return Book','type'  => 'button','class' => 'dropdown-item', 'onclick' => "returnBook(".e_id($row->id).")"]).form_close();
 
 
-            $action .= form_button([ 'content' => '<i class="fa fa-history"></i>','type'  => 'button','class' => 'btn btn-outline-dark mr-2', 'onclick' => "viewBookHistory(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#history"]);
+            $action .= form_button([ 'content' => '<i class="fa fa-history"></i> History','type'  => 'button','class' => 'dropdown-item', 'onclick' => "viewBookHistory(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#history"]);
 
-            $action .= form_open($this->redirect.'/delete', ['id' => e_id($row->id)], ['id' => e_id($row->id)]).form_button([ 'content' => '<i class="fas fa-trash"></i>','type'  => 'button','class' => 'btn btn-outline-danger', 'onclick' => "remove(".e_id($row->id).")"]).form_close();
-            $action .= '</div>';
+            $action .= form_open($this->redirect.'/delete', ['id' => e_id($row->id)], ['id' => e_id($row->id)]).form_button([ 'content' => '<i class="fas fa-trash"></i>&nbsp Delete','type'  => 'button','class' => 'dropdown-item', 'onclick' => "remove(".e_id($row->id).")"]).form_close();
+            
+            $action .= '</div></div>';
 
             $sub_array[] = $action;
 

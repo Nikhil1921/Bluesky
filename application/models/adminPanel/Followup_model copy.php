@@ -14,12 +14,11 @@ class Followup_model extends MY_Model
     public $select_column = ['l.id', 'l.name', 'l.mobile', 'l.email', 'f.follow_date', 'f.follow_time', 'f.created_at', 'f.status', 'f.remarks'];
     public $search_column = ['l.name', 'l.mobile', 'l.email', 'f.follow_date', 'f.follow_time', 'f.created_at', 'f.status', 'f.remarks'];
     public $order_column = [null, 'l.name', 'l.mobile', 'l.email', 'f.follow_date', 'f.follow_time', 'f.created_at', 'f.status', 'f.remarks', null];
-    public $order = ['f.id' => 'DESC'];
+    public $order = ['l.id' => 'DESC'];
     
 	public function make_query()
     {
         $que = "f.id IN (SELECT MAX(id) FROM follow_ups WHERE status != 'Not Interested' AND is_closed = '0'";
-        
         if (in_array($this->role, ['LMS Employee', 'Reception']))
             $que .= " AND assigned = '".$this->id."'";
 
@@ -76,8 +75,6 @@ class Followup_model extends MY_Model
             $order = $this->order;
             $this->db->order_by(key($order), $order[key($order)]);
         }
-
-        $this->db->group_by('lead_id');
     }
 
     public function count()
@@ -105,7 +102,7 @@ class Followup_model extends MY_Model
         }
         
         $count .= " GROUP BY lead_id)";
-        
+
         return $this->db->select($this->select_column)
             ->from($this->table)
             ->where($count)

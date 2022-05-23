@@ -170,10 +170,11 @@ class Inquiry_model extends MY_Model
 
     public function getStatus()
     {
-        $id = d_id($this->input->post('id'));
-        return $this->db->select('status, status_image')
-                        ->from('inquiry')
-                        ->where(['id' => $id])
+        $id = d_id($this->input->get('id'));
+        return $this->db->select('status, status_type')
+                        ->from('inquiry i')
+                        ->where(['i.id' => $id])
+                        ->join('country c', 'i.inquiry_country = c.id')
                         ->get()
                         ->row_array();
     }

@@ -43,20 +43,23 @@ class Installment extends MY_Controller {
             $sub_array[] = $row->fees;
             $sub_array[] = $row->ielts_fees;
 
-            $action = '<div class="ml-0 table-display row">';
-
-            $action .= form_button([ 'content' => '<i class="fa fa-history"></i>','type'  => 'button','class' => 'btn btn-outline-dark mr-2', 'onclick' => "viewFees(".e_id($row->id).")"]);
+            $action = '<div class="btn-group" role="group">
+                        <button class="btn btn-outline-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="fa fa-cogs"></span></button><div class="dropdown-menu" x-placement="bottom-start">';
+            
+            $action .= form_button([ 'content' => '<i class="fa fa-history"></i>&nbsp History','type'  => 'button','class' => 'dropdown-item', 'onclick' => "viewFees(".e_id($row->id).")"]);
+            
             if (in_array($this->role, ['Accountant'])):
-                $action .= anchor($this->redirect.'/fees/'.e_id($row->id), '<i class="fa fa-rupee-sign"></i>', ['class' => 'btn btn-outline-primary mr-2']);
+                $action .= anchor($this->redirect.'/fees/'.e_id($row->id), '<i class="fa fa-rupee-sign"></i>&nbsp&nbsp Collect Fees', ['class' => 'dropdown-item']);
             endif;
             if (in_array($this->role, ['Accountant', 'Consultant'])):
-                $action .= anchor($this->redirect.'/installment/'.e_id($row->id), '<i class="fa fa-credit-card"></i>', ['class' => 'btn btn-outline-primary mr-2']);
+                $action .= anchor($this->redirect.'/installment/'.e_id($row->id), '<i class="fa fa-credit-card"></i> Installments', ['class' => 'dropdown-item']);
             endif;
             if (in_array($this->role, ['Consultant'])):
-                $action .= anchor($this->redirect.'/installmentChange/'.e_id($row->id), '<i class="fa fa-credit-card"></i>', ['class' => 'btn btn-outline-primary mr-2']);
+                $action .= anchor($this->redirect.'/installmentChange/'.e_id($row->id), '<i class="fa fa-credit-card"></i> Change Installment', ['class' => 'dropdown-item']);
             endif;
 
-            $action .= '</div>';
+            $action .= '</div></div>';
             
             $sub_array[] = $action;
 

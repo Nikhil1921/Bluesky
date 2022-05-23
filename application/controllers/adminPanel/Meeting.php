@@ -44,12 +44,17 @@ class Meeting extends MY_Controller {
             $sub_array[] = $row->email;
             $sub_array[] = date('d-m-Y h:i A', strtotime($row->meeting_date));
 
-            $action = '<div class="ml-0 table-display row">'.form_button([ 'content' => '<i class="fa fa-history"></i>','type'  => 'button','class' => 'btn btn-outline-dark mr-2', 'onclick' => "viewHistory(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#history"]);
-            
-            if (in_array($this->role, ['Reception'])) 
-                $action .= form_button([ 'content' => '<i class="fas fa-user"></i>','type'  => 'button','class' => 'mr-2 btn btn-outline-primary', 'onclick' => "counselor(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#asign-counselor"]);
+            $action = '<div class="btn-group" role="group">
+                        <button class="btn btn-outline-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="fa fa-cogs"></span></button><div class="dropdown-menu" x-placement="bottom-start">';
 
-            $action .= '</div>';
+            $action .= form_button([ 'content' => '<i class="fa fa-history"></i> History','type'  => 'button','class' => 'dropdown-item', 'onclick' => "viewHistory(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#history"]);
+            
+            if (in_array($this->role, ['Reception']))
+                $action .= form_button([ 'content' => '<i class="fas fa-user"></i> Assign Inquiry','type'  => 'button','class' => 'dropdown-item', 'onclick' => "counselor(".e_id($row->id).")", 'data-toggle' => "modal", 'data-target' => "#asign-counselor"]);
+
+            $action .= '</div></div>';
+            
             $sub_array[] = $action;
 
             $data[] = $sub_array;  

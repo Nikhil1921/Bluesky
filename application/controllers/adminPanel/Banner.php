@@ -40,9 +40,14 @@ class Banner extends MY_Controller {
             $sub_array = array();
             $sub_array[] = $sr;
             $sub_array[] = img(['src' => $row->image, 'width' => 100, 'height' => 80]);
-            $action = '<div class="ml-0 table-display row">';
-            $action .= form_open($this->redirect.'/delete', ['id' => e_id($row->id)], ['id' => e_id($row->id)]).form_button([ 'content' => '<i class="fas fa-trash"></i>','type'  => 'button','class' => 'btn btn-outline-danger', 'onclick' => "remove(".e_id($row->id).")"]).form_close();
-            $action .= '</div>';
+            
+            $action = '<div class="btn-group" role="group">
+                        <button class="btn btn-outline-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="fa fa-cogs"></span></button><div class="dropdown-menu" x-placement="bottom-start">';
+            
+            $action .= form_open($this->redirect.'/delete', ['id' => e_id($row->id)], ['id' => e_id($row->id)]).form_button([ 'content' => '<i class="fas fa-trash"></i> Delete','type'  => 'button','class' => 'dropdown-item', 'onclick' => "remove(".e_id($row->id).")"]).form_close();
+            
+            $action .= '</div></div>';
 
             $sub_array[] = $action;
 
@@ -85,7 +90,7 @@ class Banner extends MY_Controller {
         
         $id = $this->main->delete($this->table, ['id' => $bid]);
         
-        if ($id && $img && file_exists("assets/images/banners/".$img))
+        if ($id && $img && is_file("assets/images/banners/".$img))
             unlink("assets/images/banners/".$img);
         
         flashMsg($id, ucwords($this->name)." Deleted Successfully.", ucwords($this->name)." Not Deleted. Try again.", $this->redirect);
